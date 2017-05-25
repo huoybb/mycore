@@ -15,6 +15,7 @@
         "fzaninotto/faker": "^1.6"
     },
     "autoload": {
+        "files": ["helper.php"],
         "psr-4": {
             "huoybb\\core\\":"src/"
         }
