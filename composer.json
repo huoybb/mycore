@@ -3,8 +3,8 @@
     "description": "Try to make phalon framework more adaptable to my own needs.",
     "type": "library",
     "require": {
-        "php": ">=5.5",
-        "ext-phalcon": "^2.0 || ^3.0",
+        "php": ">=7.1",
+        "ext-phalcon": "^3.1",
         "phalcon/ide-stubs": "^3.1",
         "nesbot/carbon": "^1.22",
         "illuminate/support": "^5.4",
