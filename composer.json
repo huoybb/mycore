@@ -1,0 +1,22 @@
+{
+    "name": "huoybb/core",
+    "description": "Try to make phalon framework more adaptable to my own needs.",
+    "type": "library",
+    "require": {
+        "php": ">=5.5",
+        "ext-phalcon": "^2.0 || ^3.0",
+        "phalcon/ide-stubs": "^3.1",
+        "nesbot/carbon": "^1.22",
+        "illuminate/support": "^5.4",
+        "symfony/console": "^3.2",
+        "robmorgan/phinx": "^0.7.1",
+        "guzzlehttp/guzzle": "^6.2",
+        "fabpot/goutte": "^3.1",
+        "fzaninotto/faker": "^1.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "huoybb\\core\\":"src/"
+        }
+    }
+}
