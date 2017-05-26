@@ -9,7 +9,7 @@
 namespace huoybb\core;
 
 
-use core\Exceptions\ModelBindingNotFoundException;
+use huoybb\core\Exceptions\ModelBindingNotFoundException;
 use Phalcon\Di\InjectionAwareInterface;
 use Phalcon\Mvc\Dispatcher;
 use ReflectionMethod;

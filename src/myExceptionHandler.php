@@ -9,7 +9,7 @@
 namespace huoybb\core;
 
 
-use core\Exceptions\ModelBindingNotFoundException;
+use huoybb\core\Exceptions\ModelBindingNotFoundException;
 use Exception;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\User\Plugin;
