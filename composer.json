@@ -5,7 +5,7 @@
     "require": {
         "php": ">=7.1",
         "ext-phalcon": "^3.1",
-        "phalcon/ide-stubs": "^3.1",
+        "phalcon/ide-stubs": "^3.2",
         "nesbot/carbon": "^1.22",
         "illuminate/support": "^5.4",
         "symfony/console": "^3.2",

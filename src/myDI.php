@@ -10,11 +10,12 @@ use Phalcon\Di\FactoryDefault;
  */
 class myDI extends FactoryDefault
 {
-    public function register(array $providers)
+    public function myRegister(array $providers)
     {
         foreach($providers as $name => $provider){ new $provider($name,$this);}
     }
     public static function make($serviceName){
         return static::getDefault()->get($serviceName);
     }
+
 }
