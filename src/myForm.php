@@ -33,8 +33,8 @@ class myForm extends Form
                 $this->session->remove('_myLastInput');
             }
             parent::__construct($model);
-            $this->initialize($model);
         }
+        $this->initialize($model);
     }
 
     public function add(\Phalcon\Forms\ElementInterface $element, $position = null, $type = null)
@@ -51,25 +51,38 @@ class myForm extends Form
     protected function initialize(myModel $model)
     {
         $fields = [];
-        $metaDataTypes = $model->getModelsMetaData()->getDataTypes($model);
+
+        if($model){
+            $metaDataTypes = $model->getModelsMetaData()->getDataTypes($model);
 //        dd($metaDataTypes);
-        foreach ($metaDataTypes as $column => $dataType) {
             if(count($this->only)){
-                if(in_array($column, $this->getFieldNames())){
-                    $fields[] = $this->addElement($column,$dataType);
+                foreach($this->getFieldNames() as $field){
+                    if(isset($metaDataTypes[$field])){
+                        $fields[] = $this->addElement($field,$metaDataTypes[$field]);
+                    }else{
+                        $fields[] = $this->addElement($field);
+                    }
                 }
-            }elseif(!in_array($column, $this->exludedFields)) {
-                $fields[] = $this->addElement($column,$dataType);
-            };
+            }else{
+                foreach ($metaDataTypes as $column => $dataType) {
+                    if(!in_array($column, $this->exludedFields)) {
+                        $fields[] = $this->addElement($column,$dataType);
+                    };
+                }
+            }
+
+            if ($model->id) {
+                $this->add(new Submit('修改'));
+            } else {
+                $this->add(new Submit('增加'));
+            }
+        }elseif(count($this->only)){
+            foreach($this->getFieldNames() as $field){
+                $fields[] = $this->addElement($field);
+            }
         }
 
         $this->fields = $fields;
-
-        if ($model->id) {
-            $this->add(new Submit('修改'));
-        } else {
-            $this->add(new Submit('增加'));
-        }
     }
 
     protected function addElement($column, $dataType=0)
