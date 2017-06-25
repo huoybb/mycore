@@ -48,7 +48,7 @@ class myForm extends Form
 
     //** 下面这些函数都是内部使用的，不对外开发 */
 
-    protected function initialize(myModel $model)
+    protected function initialize(myModel $model = null)
     {
         $fields = [];
 
