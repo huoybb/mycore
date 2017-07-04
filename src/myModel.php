@@ -112,7 +112,7 @@ abstract class myModel extends Model{
         if($data){
             $data = $this->filterNotEmpty($data);
         }
-        parent::save($data,$whiteList);
+        return parent::save($data,$whiteList);
     }
 
 
