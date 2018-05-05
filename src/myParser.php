@@ -9,6 +9,8 @@
 namespace huoybb\core;
 
 use Goutte\Client;
+use Symfony\Component\DomCrawler\Crawler;
+
 abstract class myParser
 {
     protected $crawler;
@@ -17,9 +19,9 @@ abstract class myParser
      * serialParser constructor.
      * @param $crawler
      */
-    public function __construct($url)
+    public function __construct($url = null)
     {
-        $this->crawler = $this->getCrawler($url);
+        if($url) $this->crawler = $this->getCrawler($url);
     }
     abstract public function parse();
     /**
@@ -36,5 +38,24 @@ abstract class myParser
         $crawler = $client->request('get',$url);
         return $crawler;
     }
+    public function setCrawlerByUrl($url)
+    {
+        $client  = new Client();
+        //下面两行，避免了SSL的验证，在正式的web环境中已经设置了，但在命令行中可以直接取消掉验证
+        $httpClient = new \GuzzleHttp\Client(array( 'curl' => array( CURLOPT_SSL_VERIFYPEER => false, ), ));
+        $client->setClient($httpClient);
+
+        $this->crawler = $client->request('get',$url);
+        return $this;
+    }
+    public function setCrawlerByContent($content)
+    {
+        $crawler = new Crawler();
+        $crawler->addContent($content);
+        $this->crawler = $crawler;
+        return $this;
+    }
+
+
 
 }
