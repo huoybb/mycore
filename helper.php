@@ -9,7 +9,6 @@ use Illuminate\Support\Debug\Dumper;
 use huoybb\core\myDI;
 use huoybb\core\myFactory;
 use huoybb\core\myEventsManager;
-
 if(! function_exists('auth')){
     /**
      * @return huoybb\core\myAuth
