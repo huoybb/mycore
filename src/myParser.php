@@ -55,7 +55,7 @@ abstract class myParser
         $this->crawler = $crawler;
         return $this;
     }
-
-
-
+    public static function parseUrl($url){
+        return (new static($url))->parse();
+    }
 }
