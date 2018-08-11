@@ -58,4 +58,44 @@ abstract class myParser
     public static function parseUrl($url){
         return (new static($url))->parse();
     }
+
+    protected function stripBlank($word)
+    {
+        return trim(preg_replace('|\s+|',' ',$word));
+    }
+
+
+    protected function getText($css_selector){
+        $filter = $this->crawler->filter($css_selector);
+        if($filter->count()) return $this->stripBlank($filter->text());
+        return null;
+    }
+    protected function getTextFromArrayNodes($css_selector,$seperator = ' '){
+        $filter = $this->crawler->filter($css_selector);
+        if($filter->count()){
+            return collect($filter->each(function(Crawler $item){
+                return $this->stripBlank($item->text());
+            }))->implode($seperator);
+        }
+        return null;
+    }
+
+    protected function getHtml($css_selector)
+    {
+        $filter = $this->crawler->filter($css_selector);
+        if($filter->count()) return $filter->html();
+        return null;
+    }
+
+    protected function getHTMLFromArrayNodes($css_selector,$seperator = ' <br> '){
+        $filter = $this->crawler->filter($css_selector);
+        if($filter->count()){
+            return collect($filter->each(function(Crawler $item){
+                $result = $item->html();
+                if(preg_match('|if\(less1280\)|',$result)) return null;
+                return $result;
+            }))->implode($seperator);
+        }
+        return null;
+    }
 }

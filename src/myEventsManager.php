@@ -1,6 +1,7 @@
 <?php
 namespace huoybb\core;
 use Phalcon\Di;
+use Phalcon\Events\Event;
 
 /**
  * Created by PhpStorm.
@@ -31,7 +32,8 @@ class myEventsManager extends \Phalcon\Events\Manager
     {
         foreach($handlerClassArray as $handler){
 //                $this->attach($eventDomain,new $handler);
-            $this->attach($eventDomain,function($e,$eventObject)use($handler){
+            $this->attach($eventDomain,function(Event $e,myEvent $eventObject)use($handler){
+                $eventObject->setPhalconEvent($e);
                 $actionName = 'when'.get_class($eventObject);
                 $handler = myDI::getDefault()->get($handler);
                 if(method_exists($handler,$actionName)){
