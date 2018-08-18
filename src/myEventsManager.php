@@ -28,24 +28,30 @@ class myEventsManager extends \Phalcon\Events\Manager
             }
         });
     }
-    public function register($eventDomain, array $handlerClassArray)
+    //便于后续卸载事件handler时用到，这个原有框架没有提供
+    protected $handlerObjectsArray = [];
+
+    public function register(array $handlerClassArray)
     {
         foreach($handlerClassArray as $handler){
-//                $this->attach($eventDomain,new $handler);
-            $this->attach($eventDomain,function(Event $e,myEvent $eventObject)use($handler){
-                $eventObject->setPhalconEvent($e);
-                $actionName = 'when'.get_class($eventObject);
-                $handler = myDI::getDefault()->get($handler);
-                if(method_exists($handler,$actionName)){
-                    $handler->$actionName($eventObject);
-                }
-            });
+            $handlerObject = $this->getHandlerFunction($handler);
+            $this->handlerObjectsArray[$handler]=$handlerObject;
+
+            $this->attach($this->getEventPrefix(),$handlerObject);
         }
     }
 
-    /**
-     * @param $event
-     */
+
+    public function unregister(array $handlerClassArray)
+    {
+        foreach($handlerClassArray as $handler){
+            $handlerObject = $this->handlerObjectsArray[$handler];
+            $this->detach($this->getEventPrefix(),$handlerObject);
+        }
+    }
+
+
+
     public function trigger($event)
     {
         $eventName = $this->getEventName($event);
@@ -54,7 +60,16 @@ class myEventsManager extends \Phalcon\Events\Manager
 
 
 //    ---------------helper functions ---------------------
-
+    protected function getHandlerFunction($handler){
+        return function(Event $e,myEvent $eventObject) use($handler){
+            $eventObject->setPhalconEvent($e);
+            $actionName = 'when'.get_class($eventObject);
+            $handler = myDI::getDefault()->get($handler);
+            if(method_exists($handler,$actionName)){
+                $handler->$actionName($eventObject);
+            }
+        };
+    }
     public function getAllEvents()
     {
         return $this->_events;
@@ -67,7 +82,5 @@ class myEventsManager extends \Phalcon\Events\Manager
     {
         return Di::getDefault()->get('config')->application->eventPrefix;
     }
-
-
 
 }
